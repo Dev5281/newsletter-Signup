@@ -13,10 +13,11 @@ app.get("/",function(req,res){
 });
 
 app.post("/", function(req, res){
+    console.log("Received POST request");
    const firstName = req.body.fName;
    const lastName = req.body.lName;
    const email = req.body.email;
-    const data = {
+   const data = {
         members: [
             {
             email_address: email,
@@ -32,12 +33,12 @@ app.post("/", function(req, res){
     };
     const jsonData = JSON.stringify(data);
 
-    const url= "https://us22.api.mailchimp.com/3.0/lists/dcc720b560";
-    const options = {
+     const url= "https://us22.api.mailchimp.com/3.0/lists/dcc720b560";
+     const options = {
         method : "POST",
         auth : "divyanshu:467d8210299a2129f969fd0e74454497-us22"
-    }
-    const request = https.request(url, options, function(response) {
+     }
+     const request = https.request(url, options, function(response) {
         if(response.statusCode === 200){
             res.sendFile(__dirname +"/success.html");
         }
@@ -46,9 +47,10 @@ app.post("/", function(req, res){
         }
          response.on("data", function(data){
             console.log(JSON.parse(data));
-         })
-    })
-    //request.write(jsonData);
+         });
+         
+    });
+    request.write(jsonData);
     request.end();
 
 });
